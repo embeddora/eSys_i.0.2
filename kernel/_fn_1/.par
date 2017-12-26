@@ -1,0 +1,40 @@
+### This is a parameter file. It's assumed that you're preparing it
+### according to below syntax rules.
+
+### Keywords are: 'arg1', 'arg2', 'arg3', 'arg4', 'arg5', 'arg6' and
+### 'name'. After keyword there _must_ follow a ':' character.
+### Then - the variable itself. 
+
+### Say, if you want first parameter of function to be a 0x001245A0 then
+### yuo should insert in this file a _unique_ entry: 'arg1:001245A0'.
+### Attention: absence of starting '0x' for unsigned hexadecimal variable
+### matters! And presence of beginning zeroes '00.....' (to set variable's
+### length to 8 characters) also matters.
+
+### If you want your function to be registered in Behoerde under name
+### SomeNiceName, then you should insert in this file a unique entry:
+### 'name:SomeNiceName'. Attention: only first 15 characters of function's
+### name are of meaning.
+
+### Commented line starts with '#' character. Each line organized not
+### according to prescribed above syntax rules gets ignored.
+
+
+
+name:func1
+
+
+arg1:0009660C			#__svgalib_graph_mem
+
+arg2:000929F4			#vga_setmode(int)
+arg3:00092286			#vga_setcolor(int)
+arg4:00092DAC			#vga_drawpixel(int, int)
+
+
+
+
+
+
+#arg5:00000000
+#arg6:00000000
+

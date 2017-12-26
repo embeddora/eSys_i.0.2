@@ -1,0 +1,27 @@
+ifneq ($(TARGET),INTEL)
+BINDIR	= 
+AS	= 
+CC	= 
+LD	= 
+NM	= 
+SZ	= 
+OD	= 
+OC	= 
+SB	= 
+LDFLAGS = 
+ARFLAGS	=  
+ASFLAGS =
+CFLAGS	=
+else
+AS	= as
+CC	= gcc
+LD	= ld
+NM	= nm
+SZ	= size
+OD	= objdump
+OC	= objcopy
+SB	= stob 
+LDFLAGS = 
+ARFLAGS	=  
+CFLAGS = -I../include  -O0 -pipe  -fno-builtin -nostdlib  
+endif

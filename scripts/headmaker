@@ -1,0 +1,141 @@
+#!/usr/bin/perl
+
+@names = ("AAAAAAAAAAAA");
+
+@argaddresses = (
+"00000000", "00000000", "00000000", "00000000", "00000000", "00000000");
+
+
+sub Cmaker {
+
+local($template_file) = @_;    
+
+
+
+    printf STDOUT @names;    
+    
+    
+    for ($in=length(@names[0]); $in<16; $in++)    
+    {    
+
+	printf STDOUT "%c", 0;
+    
+    }
+            
+
+    for ($in=0; $in<6; $in++)    
+    {
+	$data = @argaddresses[$in];
+	
+	printf STDOUT $data;
+	
+	printf STDOUT "%c", 0;
+	
+    }    
+    
+    printf STDOUT "%c", 0; # align codebegin at 4x
+    printf STDOUT "%c", 0; # align codebegin at 4x
+    
+    return(1);
+}
+
+
+
+
+sub parse_template {
+
+    local($template_file, *OUT) = @_;
+    
+    local($line);
+
+    if (!open(TEMPLATE, $template_file))
+    {     
+	$Error_Message = "Could not open $template_file ($!).";
+	
+	return(0);
+    }
+    
+    for ($in=0; $in<16; $in++)    
+    {    
+
+	$names[$in] = int(0);
+    
+    }
+
+    
+    while ($line = <TEMPLATE>)
+    {
+
+    if (length($line)-5-1 <= 0x10)
+    {
+	$tmp_len1 = length($line)-5-1;
+    }
+    else
+    {
+	$tmp_len1 = 0x10-1;
+    }
+
+####################################    
+    if (length($line)-5-1 <= 0x8)
+    {
+	$tmp_len = length($line);
+    }
+    else
+    {
+	$tmp_len = 8+5+1;
+    }
+#####$tmp_len = length($line);
+
+
+
+    
+    $li = substr($line, 0, 3);
+    $n = substr($line, 3, 1);
+    $e = substr($line, 4, 1);
+
+    $nm = substr($line, 0, 4);
+    $nme = substr($line, 4, 1);
+    
+        
+    $rest = substr($line, 5, ($tmp_len-1) - 5);
+    $rest1 = substr($line, 5, $tmp_len1);
+	    
+    if (($li eq "arg") &&  ($e eq ":") )
+    {
+	if ($n eq "1")
+	{
+	    $indx = 0;
+	    @argaddresses[$indx] = $rest;
+	} 
+		
+	if ($n eq "2")	{  $indx = 1;  @argaddresses[$indx] = $rest; }
+	if ($n eq "3")	{  $indx = 2;  @argaddresses[$indx] = $rest; }
+	if ($n eq "4")	{  $indx = 3;  @argaddresses[$indx] = $rest; }
+	if ($n eq "5")	{  $indx = 4;  @argaddresses[$indx] = $rest; }
+	if ($n eq "6")	{  $indx = 5;  @argaddresses[$indx] = $rest; }	    
+    }   
+    elsif (($nm eq "name") &&  ($nme eq ":") )
+    {
+	@names = $rest1;
+    }
+    }
+
+    close(TEMPLATE);
+    return(1);
+}
+
+
+
+$template_file = '.par';
+$out_file = '.out';
+
+
+if (!&parse_template($template_file, *STDOUT)) {
+
+    print "Error_Message! \n";
+    
+}
+else
+{
+    &Cmaker($out_file);
+}
